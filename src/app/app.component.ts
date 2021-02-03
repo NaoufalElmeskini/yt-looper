@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'YT-looper';
+  private title = 'YT-looper';
+  private videoUrl: string;
+  private showVideoReaderComponent: boolean;
+
+  displayVideo() {
+    console.log("this.videoUrl: ");
+  }
 }
