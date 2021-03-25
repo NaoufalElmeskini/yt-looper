@@ -10,7 +10,7 @@ import {Observable} from "rxjs";
 export class AppComponent {
   title = 'yt-looper';
   private API_URL = 'https://www.googleapis.com/youtube/v3/search';
-  private API_KEY = 'AIzaSyATvXfzBrACJ5xk5xmDBAlAdleOS5GKnGo';
+  private API_KEY = '';
 
   constructor(httpClient: HttpClient) {}
 
