@@ -1,0 +1,46 @@
+<h2 class="text-uppercase text-center font-italic">(actions)</h2>
+
+<div class="container">
+  <div class="form-group text-center">
+    <div class="text-center text-capitalize">
+      <label for="urlInput" class="col-form-label font-weight-bold">video url</label>
+    </div>
+
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span id="urlPrefixe" class="input-group-text">https://www.youtube.com/</span>
+      </div>
+      <input id="urlInput" class="form-control" aria-describedby="urlPrefixe">
+    </div>
+
+    <button type="button" class="btn btn-outline-danger mt-3 col-4">Get!</button>
+  </div>
+
+  <div class="mt-5 text-center">
+    <label for="speedRange">Speed</label>
+    <input type="range" class="custom-range" min="0" max="4" id="speedRange">
+
+    <div class="row mt-2">
+      <div class="col-md-4 input-group">
+        <div class="input-group-prepend">
+          <span id="startPrefixe" class="input-group-text">Start</span>
+        </div>
+        <input id="start" class="form-control" aria-describedby="startPrefixe" type="time">
+      </div>
+
+      <div class="col-md-4 input-group">
+        <div class="input-group-prepend">
+          <span id="finishPrefixe" class="input-group-text">Finish</span>
+        </div>
+        <input id="finish" class="form-control" aria-describedby="finishPrefixe" type="time">
+      </div>
+
+      <div class="col-md-4 input-group">
+        <button type="button" class="btn btn-outline-danger btn-block">
+          <img src="assets/images/loop2.png" height="20px">
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
