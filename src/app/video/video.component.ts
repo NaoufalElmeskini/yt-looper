@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {EventBrokerService} from "ng-event-broker";
-import {Events} from "../events.model";
+import {EventBrokerService} from 'ng-event-broker';
+import {Events} from '../events.model';
 
 @Component({
   selector: 'app-video',
@@ -16,7 +16,10 @@ export class VideoComponent implements OnInit {
   public YT: any;
   public video: any;
   public player: any;
-  public reframed: boolean = false;
+  public reframed = false;
+
+  private startingTime = 50;
+  private endingTime = 53;
 
   isRestricted = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -27,34 +30,27 @@ export class VideoComponent implements OnInit {
     this.video = 'nRiOw3qGYq4';
     this.init();
 
-    this.eventService.subscribeEvent(Events.videoPause).subscribe((action) => {
-      console.log('event videoPause received');
-      // if (action === 'pause') {
-      //   console.log('')
-      //   this.pauseVideo();
-      // } else {
-      //   this.playVideo();
-      // }
-    })
+    this.eventService.subscribeEvent(Events.videoPause).subscribe(() => { this.pauseVideo(); });
+    this.eventService.subscribeEvent(Events.videoPlay).subscribe(() => { this.playVideo(); });
   }
 
   /* 2. Initialize method for YT IFrame API */
   init() {
 
-    var tag = document.createElement('script');
+    let tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
     console.log(document.getElementsByTagName('script'));
-    var firstScriptTag = document.getElementsByTagName('script')[0];
+    let firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     /* 3. startVideo() will create an <iframe> (and YouTube player) after the API code downloads. */
-    window['onYouTubeIframeAPIReady'] = () => this.startVideo();
+    window.onYouTubeIframeAPIReady = () => this.startVideo();
   }
 
 
   startVideo() {
     this.reframed = false;
-    this.player = new window['YT'].Player('player', {
+    this.player = new window.YT.Player('player', {
       videoId: this.video,
       playerVars: {
         autoplay: 1,
@@ -64,12 +60,14 @@ export class VideoComponent implements OnInit {
         rel: 0,
         showinfo: 0,
         fs: 0,
-        playsinline: 1
+        playsinline: 1,
+        start: this.startingTime,
+        end: this.endingTime,
       },
       events: {
-        'onStateChange': this.onPlayerStateChange.bind(this),
-        'onError': this.onPlayerError.bind(this),
-        'onReady': this.onPlayerReady.bind(this),
+        onStateChange: this.onPlayerStateChange.bind(this),
+        onError: this.onPlayerError.bind(this),
+        onReady: this.onPlayerReady.bind(this),
       }
     });
   }
@@ -86,42 +84,54 @@ export class VideoComponent implements OnInit {
   }
 
   onPlayerStateChange(event) {
-    console.log(event)
+    console.log(event);
     switch (event.data) {
-      case window['YT'].PlayerState.PLAYING:
-        if (this.cleanTime() == 0) {
+      case window.YT.PlayerState.PLAYING:
+        if (this.cleanTime() === 0) {
           console.log('started ' + this.cleanTime());
         } else {
-          console.log('playing ' + this.cleanTime())
-        };
+          console.log('playing ' + this.cleanTime());
+        }
         break;
-      case window['YT'].PlayerState.PAUSED:
+      case window.YT.PlayerState.PAUSED:
         if (this.player.getDuration() - this.player.getCurrentTime() != 0) {
           console.log('paused' + ' @ ' + this.cleanTime());
-        };
+        }
         break;
-      case window['YT'].PlayerState.ENDED:
+      case window.YT.PlayerState.ENDED:
         console.log('ended ');
         break;
-    };
-  };
+    }
+  }
 
 
   cleanTime() {
-    return Math.round(this.player.getCurrentTime())
-  };
+    return Math.round(this.player.getCurrentTime());
+  }
 
   onPlayerError(event) {
     switch (event.data) {
       case 2:
-        console.log('' + this.video)
+        console.log('' + this.video);
         break;
       case 100:
         break;
       case 101 || 150:
         break;
-    };
-  };
+    }
+  }
+
+  pauseVideo() {
+    console.log('event received: videoPause.');
+    console.log(this.player);
+    this.player.pauseVideo();
+  }
+
+  playVideo() {
+    console.log('event received: videoPlay.');
+    console.log(this.player.playerVars);
+    this.player.playVideo();
+  }
 
 
 }

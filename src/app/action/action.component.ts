@@ -8,6 +8,7 @@ import {Events} from "../events.model";
   styleUrls: ['./action.component.css']
 })
 export class ActionComponent implements OnInit {
+  videoState = 'paused';
 
   constructor(private eventService: EventBrokerService) { }
 
@@ -16,7 +17,21 @@ export class ActionComponent implements OnInit {
 
   pauseOrPlayVideo() {
     console.log('publishing...');
-    this.eventService.publishEvent(Events.videoPause, 12);
-    console.log('videoPause event published.');
+    console.log('videoState: ' + this.videoState);
+
+    if (this.videoState === 'paused') {
+      this.eventService.publishEvent(Events.videoPause);
+    } else {
+      this.eventService.publishEvent(Events.videoPlay);
+    }
+    this.switchState();
+  }
+
+  switchState() {
+    if (this.videoState === 'paused') {
+      this.videoState = 'playing';
+    } else {
+      this.videoState = 'paused';
+    }
   }
 }
