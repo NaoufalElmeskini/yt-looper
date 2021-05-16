@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {EventBrokerService} from "ng-event-broker";
+import {Events} from "./events.model";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,15 @@ export class AppComponent {
   private API_URL = 'https://www.googleapis.com/youtube/v3/search';
   private API_KEY = '';
 
-  constructor() {}
+  constructor(private eventService: EventBrokerService) {}
+
+  ngOnInit() {
+    this.registerAppEvents();
+  }
 
 
+  private registerAppEvents() {
+    this.eventService.registerEvent(Events.videoPause);
+    this.eventService.registerEvent(Events.videoPlay);
+  }
 }

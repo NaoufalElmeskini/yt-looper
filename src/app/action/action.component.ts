@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {EventBrokerService} from "ng-event-broker";
+import {Events} from "../events.model";
 
 @Component({
   selector: 'app-action',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActionComponent implements OnInit {
 
-  constructor() { }
+  constructor(private eventService: EventBrokerService) { }
 
   ngOnInit() {
   }
 
+  pauseOrPlayVideo() {
+    console.log('publishing...');
+    this.eventService.publishEvent(Events.videoPause, 12);
+    console.log('videoPause event published.');
+  }
 }

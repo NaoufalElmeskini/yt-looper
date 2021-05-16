@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {EventBrokerService} from "ng-event-broker";
+import {Events} from "../events.model";
 
 @Component({
   selector: 'app-video',
@@ -18,10 +20,22 @@ export class VideoComponent implements OnInit {
 
   isRestricted = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+  constructor(private eventService: EventBrokerService) {}
+
 
   ngOnInit() {
     this.video = 'nRiOw3qGYq4';
     this.init();
+
+    this.eventService.subscribeEvent(Events.videoPause).subscribe((action) => {
+      console.log('event videoPause received');
+      // if (action === 'pause') {
+      //   console.log('')
+      //   this.pauseVideo();
+      // } else {
+      //   this.playVideo();
+      // }
+    })
   }
 
   /* 2. Initialize method for YT IFrame API */
@@ -29,6 +43,7 @@ export class VideoComponent implements OnInit {
 
     var tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
+    console.log(document.getElementsByTagName('script'));
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
@@ -50,7 +65,6 @@ export class VideoComponent implements OnInit {
         showinfo: 0,
         fs: 0,
         playsinline: 1
-
       },
       events: {
         'onStateChange': this.onPlayerStateChange.bind(this),

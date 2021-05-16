@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ActionComponent } from './action/action.component';
 import { VideoComponent } from './video/video.component';
 import { YouTubePlayerModule} from '@angular/youtube-player';
+import {EventBrokerModule} from "ng-event-broker";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { YouTubePlayerModule} from '@angular/youtube-player';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    YouTubePlayerModule
+    YouTubePlayerModule,
+    EventBrokerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
