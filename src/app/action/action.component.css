@@ -10,3 +10,22 @@
 .custom-range::-ms-thumb {
   background: red;
 }
+
+/*#loopButton {*/
+
+/*}*/
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.time-picker {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  width: 100%;
+  max-width: 200px;
+}

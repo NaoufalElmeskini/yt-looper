@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {EventBrokerService} from "ng-event-broker";
-import {Events} from "../events.model";
+import {Events} from "../../models/events.model";
+import {VideoPortion} from "../../models/video-portion.model";
 
 @Component({
   selector: 'app-action',
@@ -8,30 +9,40 @@ import {Events} from "../events.model";
   styleUrls: ['./action.component.css']
 })
 export class ActionComponent implements OnInit {
-  videoState = 'paused';
+  isVideoPlaying = true;
+  videoPortion: VideoPortion;
 
   constructor(private eventService: EventBrokerService) { }
 
   ngOnInit() {
+    this.initJS();
+    this.initVideoPortion();
+  }
+
+  private initVideoPortion() {
+    this.videoPortion = new VideoPortion();
+
+    console.log(this.videoPortion);
   }
 
   pauseOrPlayVideo() {
-    console.log('publishing...');
-    console.log('videoState: ' + this.videoState);
-
-    if (this.videoState === 'paused') {
+    console.log('videoPlaying = ' + this.isVideoPlaying);
+    if (this.isVideoPlaying) {
+      console.log('sending event: videoPause');
       this.eventService.publishEvent(Events.videoPause);
     } else {
-      this.eventService.publishEvent(Events.videoPlay);
+      console.log('sending event: videoPlay');
+      this.eventService.publishEvent(Events.videoPlay, this.videoPortion);
     }
     this.switchState();
   }
 
   switchState() {
-    if (this.videoState === 'paused') {
-      this.videoState = 'playing';
-    } else {
-      this.videoState = 'paused';
-    }
+    this.isVideoPlaying = !this.isVideoPlaying;
+  }
+
+  private initJS() {
+
+    console.log('initJS()');
   }
 }

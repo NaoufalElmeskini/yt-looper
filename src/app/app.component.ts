@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {EventBrokerService} from "ng-event-broker";
-import {Events} from "./events.model";
+import {Events} from "../models/events.model";
 
 @Component({
   selector: 'app-root',

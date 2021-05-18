@@ -25,18 +25,19 @@
         <div class="input-group-prepend">
           <span id="startPrefixe" class="input-group-text">Start</span>
         </div>
-        <input id="start" class="form-control" aria-describedby="startPrefixe" type="time">
+        <input id="startingTime" aria-describedby="startPrefixe" class="form-control"
+               type="time">
       </div>
 
       <div class="col-md-4 input-group">
         <div class="input-group-prepend">
           <span id="finishPrefixe" class="input-group-text">Finish</span>
         </div>
-        <input id="finish" class="form-control" aria-describedby="finishPrefixe" type="time">
+        <input id="endingTime" class="form-control" aria-describedby="finishPrefixe" type="time">
       </div>
 
       <div class="col-md-4 input-group">
-        <button type="button" class="btn btn-outline-danger btn-block" (click)="pauseOrPlayVideo()">
+        <button id="loopButton" type="button" class="btn btn-outline-danger btn-block" (click)="pauseOrPlayVideo()">
           <img src="assets/images/loop2.png" height="20px">
         </button>
       </div>

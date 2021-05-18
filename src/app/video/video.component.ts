@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {EventBrokerService} from 'ng-event-broker';
-import {Events} from '../events.model';
+import {Events} from '../../models/events.model';
+import {VideoPortion} from "../../models/video-portion.model";
+import {YouTubePlayer} from "@angular/youtube-player";
 
 @Component({
   selector: 'app-video',
@@ -18,8 +20,7 @@ export class VideoComponent implements OnInit {
   public player: any;
   public reframed = false;
 
-  private startingTime = 50;
-  private endingTime = 53;
+  private videoPortion: VideoPortion;
 
   isRestricted = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -31,7 +32,11 @@ export class VideoComponent implements OnInit {
     this.init();
 
     this.eventService.subscribeEvent(Events.videoPause).subscribe(() => { this.pauseVideo(); });
-    this.eventService.subscribeEvent(Events.videoPlay).subscribe(() => { this.playVideo(); });
+    this.eventService.subscribeEvent(Events.videoPlay).subscribe((data) => {
+      this.videoPortion = data;
+      console.log({data});
+      this.playVideo();
+    });
   }
 
   /* 2. Initialize method for YT IFrame API */
@@ -53,16 +58,14 @@ export class VideoComponent implements OnInit {
     this.player = new window.YT.Player('player', {
       videoId: this.video,
       playerVars: {
-        autoplay: 1,
+        autoplay: 0,
         modestbranding: 1,
         controls: 1,
         disablekb: 1,
         rel: 0,
         showinfo: 0,
         fs: 0,
-        playsinline: 1,
-        start: this.startingTime,
-        end: this.endingTime,
+        playsinline: 1
       },
       events: {
         onStateChange: this.onPlayerStateChange.bind(this),
@@ -100,6 +103,8 @@ export class VideoComponent implements OnInit {
         break;
       case window.YT.PlayerState.ENDED:
         console.log('ended ');
+        this.player.seekTo(this.videoPortion.startingTime, true);
+        // this.player.playVideo();
         break;
     }
   }
@@ -123,14 +128,43 @@ export class VideoComponent implements OnInit {
 
   pauseVideo() {
     console.log('event received: videoPause.');
-    console.log(this.player);
     this.player.pauseVideo();
   }
 
   playVideo() {
     console.log('event received: videoPlay.');
-    console.log(this.player.playerVars);
+    this.player.destroy();
+    this.updatePlayerWithVideoPortion(this.videoPortion);
     this.player.playVideo();
+  }
+
+  isValueBetween(value: number, min: number, max: number): boolean {
+    return (value >= min && value <= max);
+  }
+
+  updatePlayerWithVideoPortion(videoPortion: VideoPortion) {
+    console.log({videoPortion});
+
+    this.player = new window.YT.Player('player', {
+      videoId: this.video,
+      playerVars: {
+        autoplay: 0,
+        modestbranding: 1,
+        controls: 1,
+        disablekb: 1,
+        rel: 0,
+        showinfo: 0,
+        fs: 0,
+        playsinline: 1,
+        start: this.videoPortion.startingTime,
+        end: this.videoPortion.endingTime
+      },
+      events: {
+        onStateChange: this.onPlayerStateChange.bind(this),
+        onError: this.onPlayerError.bind(this),
+        onReady: this.onPlayerReady.bind(this),
+      }
+    });
   }
 
 
