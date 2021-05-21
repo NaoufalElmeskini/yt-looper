@@ -15,7 +15,6 @@ export class VideoComponent implements OnInit {
   showVideo = true;
 
   /* 1. Some required variables which will be used by YT API*/
-  public video: any;
   public player: any;
   public reframed = false;
 
@@ -27,9 +26,8 @@ export class VideoComponent implements OnInit {
 
 
   ngOnInit() {
-    this.video = 'Bsl3ZzBAkiQ';
-    this.init();
 
+    this.subscribeToInitVideo();
     this.subscribeToPauseEvent();
     this.subscribeToPlayEvent();
     this.subscribeToPlayWithUpdateEvent();
@@ -72,24 +70,7 @@ export class VideoComponent implements OnInit {
 
   startVideo() {
     this.reframed = false;
-    this.player = new window.YT.Player('player', {
-      videoId: this.video,
-      playerVars: {
-        autoplay: 0,
-        modestbranding: 1,
-        controls: 1,
-        disablekb: 1,
-        rel: 0,
-        showinfo: 0,
-        fs: 0,
-        playsinline: 1
-      },
-      events: {
-        onStateChange: this.onPlayerStateChange.bind(this),
-        onError: this.onPlayerError.bind(this),
-        onReady: this.onPlayerReady.bind(this),
-      }
-    });
+    this.updateAndPlayVideo();
   }
 
 
@@ -148,7 +129,9 @@ export class VideoComponent implements OnInit {
   }
 
   updateAndPlayVideo() {
-    this.player.destroy();
+    if (this.player) {
+      this.player.destroy();
+    }
     this.updatePlayerWithVideoPortion(this.videoPortion);
     this.player.playVideo();
   }
@@ -159,7 +142,7 @@ export class VideoComponent implements OnInit {
 
   updatePlayerWithVideoPortion(videoPortion: VideoPortion) {
     this.player = new window.YT.Player('player', {
-      videoId: this.video,
+      videoId: this.videoPortion.videoId,
       playerVars: {
         autoplay: 0,
         modestbranding: 1,
@@ -177,6 +160,17 @@ export class VideoComponent implements OnInit {
         onError: this.onPlayerError.bind(this),
         onReady: this.onPlayerReady.bind(this),
       }
+    });
+  }
+
+  private subscribeToInitVideo() {
+
+    this.eventService.subscribeEvent(Events.videoInit).subscribe((data) => {
+      console.log('event received: videoInit');
+      this.videoPortion = data;
+      console.log(this.videoPortion);
+
+      this.init();
     });
   }
 }

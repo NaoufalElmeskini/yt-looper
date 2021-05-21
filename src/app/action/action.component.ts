@@ -17,7 +17,6 @@ export class ActionComponent implements OnInit {
   constructor(private eventService: EventBrokerService) { }
 
   ngOnInit() {
-    this.initJS();
     this.initVideoPortion();
 
     this.generateCustomElement();
@@ -27,6 +26,11 @@ export class ActionComponent implements OnInit {
     this.videoPortion = new VideoPortion();
 
     console.log(this.videoPortion);
+  }
+
+  initVideo() {
+    console.log(this.videoPortion);
+    this.eventService.publishEvent(Events.videoInit, this.videoPortion);
   }
 
   pauseOrPlayVideo() {
@@ -67,10 +71,6 @@ export class ActionComponent implements OnInit {
     this.isVideoPlaying = !this.isVideoPlaying;
   }
 
-  private initJS() {
-
-    console.log('initJS()');
-  }
 
   private generateCustomElement() {
 

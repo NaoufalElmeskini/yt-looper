@@ -1,4 +1,5 @@
 export class VideoPortion {
+  videoId: string;
   startingTime: number;
   endingTime: number;
   speed: number;

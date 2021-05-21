@@ -3,17 +3,17 @@
 <div class="container">
   <div class="form-group text-center">
     <div class="text-center text-capitalize">
-      <label for="urlInput" class="col-form-label font-weight-bold">video url</label>
+      <label for="urlInput" class="col-form-label font-weight-bold">video url (Bsl3ZzBAkiQ)</label>
     </div>
 
     <div class="input-group">
       <div class="input-group-prepend">
         <span id="urlPrefixe" class="input-group-text">https://www.youtube.com/</span>
       </div>
-      <input id="urlInput" class="form-control" aria-describedby="urlPrefixe">
+      <input id="urlInput" class="form-control" aria-describedby="urlPrefixe" [(ngModel)]="videoPortion.videoId">
     </div>
 
-    <button type="button" class="btn btn-outline-danger mt-3 col-4">Get!</button>
+    <button type="button" class="btn btn-outline-danger mt-3 col-4" (click)="initVideo()">Get!</button>
   </div>
 
   <div class="mt-5 text-center">
@@ -46,21 +46,6 @@
       </div>
 
     </div>
-
-
-    <div class="row mt-2">
-
-      <div class="col-md-4 input-group">
-<!--        <div class="input-group-prepend">-->
-<!--          <span id="startPrefixe" class="input-group-text">Start</span>-->
-<!--        </div>-->
-<!--        <input id="startingMinute" aria-describedby="startPrefixe" class="form-control text-right" type="number" placeholder="min">-->
-<!--        <span id="timeSeparator">:</span>-->
-<!--        <input id="startingSecond" class="form-control text-right" type="number" placeholder="s">-->
-      </div>
-
-    </div>
-
 
 
   </div>

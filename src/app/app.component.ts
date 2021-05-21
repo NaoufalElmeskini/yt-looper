@@ -20,6 +20,7 @@ export class AppComponent {
 
 
   private registerAppEvents() {
+    this.eventService.registerEvent(Events.videoInit);
     this.eventService.registerEvent(Events.videoPause);
     this.eventService.registerEvent(Events.videoPlay);
     this.eventService.registerEvent(Events.videoPlayWithUpdate);
