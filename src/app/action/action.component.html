@@ -25,15 +25,18 @@
         <div class="input-group-prepend">
           <span id="startPrefixe" class="input-group-text">Start</span>
         </div>
-        <input id="startingTime" aria-describedby="startPrefixe" class="form-control"
-               type="time">
+        <input id="startingMinute" aria-describedby="startPrefixe" class="form-control text-right" type="number" placeholder="min">
+        <span class="timeSeparator">:</span>
+        <input id="startingSecond" class="form-control text-right" type="number" placeholder="s">
       </div>
 
       <div class="col-md-4 input-group">
         <div class="input-group-prepend">
           <span id="finishPrefixe" class="input-group-text">Finish</span>
         </div>
-        <input id="endingTime" class="form-control" aria-describedby="finishPrefixe" type="time">
+        <input id="endingMinute" aria-describedby="startPrefixe" class="form-control text-right" type="number" placeholder="min">
+        <span class="timeSeparator">:</span>
+        <input id="endingSecond" class="form-control text-right" type="number" placeholder="s">
       </div>
 
       <div class="col-md-4 input-group">
@@ -43,5 +46,22 @@
       </div>
 
     </div>
+
+
+    <div class="row mt-2">
+
+      <div class="col-md-4 input-group">
+<!--        <div class="input-group-prepend">-->
+<!--          <span id="startPrefixe" class="input-group-text">Start</span>-->
+<!--        </div>-->
+<!--        <input id="startingMinute" aria-describedby="startPrefixe" class="form-control text-right" type="number" placeholder="min">-->
+<!--        <span id="timeSeparator">:</span>-->
+<!--        <input id="startingSecond" class="form-control text-right" type="number" placeholder="s">-->
+      </div>
+
+    </div>
+
+
+
   </div>
 </div>

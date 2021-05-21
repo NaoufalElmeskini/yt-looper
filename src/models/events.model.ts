@@ -1,4 +1,5 @@
 export const Events = {
   videoPause: "videoPause",
-  videoPlay: "videoPlay"
+  videoPlay: "videoPlay",
+  videoPlayWithUpdate: "videoPlayWithUpdate"
 }

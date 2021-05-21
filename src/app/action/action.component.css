@@ -29,3 +29,16 @@ input[type="number"]::-webkit-inner-spin-button {
   width: 100%;
   max-width: 200px;
 }
+
+.timeSeparator {
+  border-top: 1px solid #ced4da;
+  border-bottom: 1px solid #ced4da;
+}
+
+#startingSecond, #endingSecond {
+  width: 1em;
+  border-left: none;
+}
+#startingMinute, #endingMinute {
+  border-right: none;
+}

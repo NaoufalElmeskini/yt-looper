@@ -15,7 +15,6 @@ export class VideoComponent implements OnInit {
   showVideo = true;
 
   /* 1. Some required variables which will be used by YT API*/
-  public YT: any;
   public video: any;
   public player: any;
   public reframed = false;
@@ -28,20 +27,38 @@ export class VideoComponent implements OnInit {
 
 
   ngOnInit() {
-    this.video = 'nRiOw3qGYq4';
+    this.video = 'Bsl3ZzBAkiQ';
     this.init();
 
-    this.eventService.subscribeEvent(Events.videoPause).subscribe(() => { this.pauseVideo(); });
-    this.eventService.subscribeEvent(Events.videoPlay).subscribe((data) => {
+    this.subscribeToPauseEvent();
+    this.subscribeToPlayEvent();
+    this.subscribeToPlayWithUpdateEvent();
+  }
+
+  private subscribeToPlayWithUpdateEvent() {
+    this.eventService.subscribeEvent(Events.videoPlayWithUpdate).subscribe((data) => {
+      console.log('event received: videoPlayWithUpdate');
       this.videoPortion = data;
-      console.log({data});
-      this.playVideo();
+      this.updateAndPlayVideo();
+    });
+  }
+
+  private subscribeToPlayEvent() {
+    this.eventService.subscribeEvent(Events.videoPlay).subscribe(() => {
+      console.log('event received: videoPlay');
+      this.player.playVideo();
+    });
+  }
+
+  private subscribeToPauseEvent() {
+    this.eventService.subscribeEvent(Events.videoPause).subscribe(() => {
+      console.log('event received: videoPause.');
+      this.pauseVideo();
     });
   }
 
   /* 2. Initialize method for YT IFrame API */
   init() {
-
     let tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
     console.log(document.getElementsByTagName('script'));
@@ -127,12 +144,10 @@ export class VideoComponent implements OnInit {
   }
 
   pauseVideo() {
-    console.log('event received: videoPause.');
     this.player.pauseVideo();
   }
 
-  playVideo() {
-    console.log('event received: videoPlay.');
+  updateAndPlayVideo() {
     this.player.destroy();
     this.updatePlayerWithVideoPortion(this.videoPortion);
     this.player.playVideo();
@@ -143,18 +158,16 @@ export class VideoComponent implements OnInit {
   }
 
   updatePlayerWithVideoPortion(videoPortion: VideoPortion) {
-    console.log({videoPortion});
-
     this.player = new window.YT.Player('player', {
       videoId: this.video,
       playerVars: {
         autoplay: 0,
         modestbranding: 1,
         controls: 1,
-        disablekb: 1,
+        disablekb: 0,
         rel: 0,
         showinfo: 0,
-        fs: 0,
+        fs: 1,
         playsinline: 1,
         start: this.videoPortion.startingTime,
         end: this.videoPortion.endingTime
@@ -166,6 +179,4 @@ export class VideoComponent implements OnInit {
       }
     });
   }
-
-
 }

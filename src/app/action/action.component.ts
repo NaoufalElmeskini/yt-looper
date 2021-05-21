@@ -12,11 +12,15 @@ export class ActionComponent implements OnInit {
   isVideoPlaying = true;
   videoPortion: VideoPortion;
 
+  doesPlayerNeedUpdate = true;
+
   constructor(private eventService: EventBrokerService) { }
 
   ngOnInit() {
     this.initJS();
     this.initVideoPortion();
+
+    this.generateCustomElement();
   }
 
   private initVideoPortion() {
@@ -28,13 +32,35 @@ export class ActionComponent implements OnInit {
   pauseOrPlayVideo() {
     console.log('videoPlaying = ' + this.isVideoPlaying);
     if (this.isVideoPlaying) {
-      console.log('sending event: videoPause');
-      this.eventService.publishEvent(Events.videoPause);
+      this.sendVideoPauseEvent();
     } else {
-      console.log('sending event: videoPlay');
-      this.eventService.publishEvent(Events.videoPlay, this.videoPortion);
+      this.sendAVideoPlayEvent();
     }
     this.switchState();
+  }
+
+  private sendAVideoPlayEvent() {
+    if (this.doesPlayerNeedUpdate) {
+      this.sendVideoPlayWithUpdateEvent();
+    } else {
+      this.sendVideoPlayEvent();
+    }
+  }
+
+  private sendVideoPlayEvent() {
+    console.log('sending event: videoPlay');
+    this.eventService.publishEvent(Events.videoPlay);
+  }
+
+  private sendVideoPlayWithUpdateEvent() {
+    console.log('sending event: videoPlayWithUpdate');
+    this.eventService.publishEvent(Events.videoPlayWithUpdate, this.videoPortion);
+    this.doesPlayerNeedUpdate = false;
+  }
+
+  private sendVideoPauseEvent() {
+    console.log('sending event: videoPause');
+    this.eventService.publishEvent(Events.videoPause);
   }
 
   switchState() {
@@ -44,5 +70,9 @@ export class ActionComponent implements OnInit {
   private initJS() {
 
     console.log('initJS()');
+  }
+
+  private generateCustomElement() {
+
   }
 }
